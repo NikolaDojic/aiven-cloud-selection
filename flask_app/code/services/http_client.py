@@ -3,11 +3,11 @@ from config import API_KEY, API_URL
 import json
 import traceback
 
-conn = http.client.HTTPSConnection(API_URL)
 API_VERSION = "/v1/"
 
 
 def request(method, sufix, **kwargs):
+  conn = http.client.HTTPSConnection(API_URL)
   try:
     key_args = { **kwargs }
 
@@ -26,3 +26,5 @@ def request(method, sufix, **kwargs):
     traceback.print_exc()
     print(e.__class__, e)
     return res
+  finally:
+    conn.close()

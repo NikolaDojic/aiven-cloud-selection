@@ -7,12 +7,17 @@ class Clouds(Resource):
   def get(self):
     try:
       parser = reqparse.RequestParser()
-      parser.add_argument('geo_region', type=str)
+      parser.add_argument('region', type=str)
       parser.add_argument('platform', type=str)
+      parser.add_argument('refresh', type=str)
       args = parser.parse_args()
       platform = args["platform"]
-      geo_region = args["geo_region"]
-      clouds = cloud_service.filter_clouds(platform, geo_region)
+      refresh = args["refresh"]
+      region = args["region"]
+      if refresh == "true":
+        cloud_service.get_clouds()
+
+      clouds = cloud_service.filter_clouds(platform, region)
       return { "clouds": clouds }, 200
     except Exception as e:
       traceback.print_exc()

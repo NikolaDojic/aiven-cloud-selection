@@ -1,7 +1,6 @@
+import ILocation from "./ILocation";
 export interface ICloud {
   cloud_description: string;
   cloud_name: string;
-  geo_latitude: number;
-  geo_longitude: number;
-  geo_region: string;
+  location: ILocation;
 }

@@ -62,18 +62,18 @@ class CloudService:
     ]
     return filtered_clouds
 
-  def filter_by_geo_region(self, geo_region, clouds=None):
+  def filter_by_region(self, region, clouds=None):
     clouds = clouds or self.clouds
-    if not geo_region:
+    if not region:
       return [*clouds]
     filtered_clouds = [
-        cloud for cloud in clouds if cloud["geo_region"] == geo_region
+        cloud for cloud in clouds if cloud["location"]["region"] == region
     ]
     return filtered_clouds
 
-  def filter_clouds(self, platform="", geo_region=""):
+  def filter_clouds(self, platform="", region=""):
     clouds = self.filter_by_platform(platform)
-    clouds = self.filter_by_geo_region(geo_region, clouds)
+    clouds = self.filter_by_region(region, clouds)
     return clouds
 
   def __normalize_cloud(self, cloud):
