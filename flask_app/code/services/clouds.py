@@ -31,6 +31,8 @@ class CloudService:
     clouds = clouds or self.clouds
     for cloud in clouds:
       platform_id = cloud.get("cloud_name", "").split("-")[0]
+      cloud = self.__normalize_cloud(cloud)
+
       if all([
           platform["platform_id"] != platform_id
           for platform in self.available_platforms
@@ -63,7 +65,7 @@ class CloudService:
   def filter_by_geo_region(self, geo_region, clouds=None):
     clouds = clouds or self.clouds
     if not geo_region:
-      return [clouds]
+      return [*clouds]
     filtered_clouds = [
         cloud for cloud in clouds if cloud["geo_region"] == geo_region
     ]
@@ -73,6 +75,15 @@ class CloudService:
     clouds = self.filter_by_platform(platform)
     clouds = self.filter_by_geo_region(geo_region, clouds)
     return clouds
+
+  def __normalize_cloud(self, cloud):
+    location = {}
+    location_keys = [key for key in cloud if key.startswith("geo_")]
+    for key in location_keys:
+      location[key[4:]] = cloud[key]
+      del cloud[key]
+    cloud["location"] = location
+    return cloud
 
 
 cloud_service = CloudService()
