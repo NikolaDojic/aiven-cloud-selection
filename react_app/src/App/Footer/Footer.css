@@ -1,0 +1,7 @@
+.Footer {
+  height: 30px;
+  background-color: var(--main-color-footer);
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}

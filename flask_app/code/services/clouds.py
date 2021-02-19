@@ -20,7 +20,10 @@ class CloudService:
   def get_clouds(self):
     self.clouds = []
     try:
-      self.clouds = request("GET", "clouds").get("clouds", [])
+      self.clouds = [
+          self.__normalize_cloud(cloud)
+          for cloud in request("GET", "clouds").get("clouds", [])
+      ]
       self.platforms_from_clouds()
     except Exception as e:
       traceback.print_exc()
@@ -31,8 +34,6 @@ class CloudService:
     clouds = clouds or self.clouds
     for cloud in clouds:
       platform_id = cloud.get("cloud_name", "").split("-")[0]
-      cloud = self.__normalize_cloud(cloud)
-
       if all([
           platform["platform_id"] != platform_id
           for platform in self.available_platforms
@@ -48,9 +49,18 @@ class CloudService:
         new_platform = {
             "platform_id": platform_id,
             "name": name,
-            "img": imgs.get(platform_id, "")
+            "img": imgs.get(platform_id, ""),
+            "regions": [cloud["location"]["region"]]
         }
         self.available_platforms.append(new_platform)
+      else:
+        platform = [
+            platform for platform in self.available_platforms
+            if platform["platform_id"] == platform_id
+        ][0]
+        current_region = cloud["location"]["region"]
+        if current_region not in platform["regions"]:
+          platform["regions"].append(current_region)
 
   def filter_by_platform(self, platform_id, clouds=None):
     clouds = clouds or self.clouds

@@ -18,20 +18,28 @@ export const setClouds: (clouds: ICloud[]) => ISetCloudsAction = clouds => ({
 
 interface fetchCloudsArgs {
   platform?: string | null | undefined;
-  geoRegion?: string | null | undefined;
+  region?: string | null | undefined;
 }
 
-export const fetchClouds = (args?: fetchCloudsArgs) => {
-  const queryParams: string = objToQuery(args) || "";
-  return (dispatch: any) => {
+export const fetchClouds = (
+  args: fetchCloudsArgs = { platform: "", region: "" }
+) => {
+  return (dispatch: any, getState: any) => {
+    const platform =
+      (args || {}).platform || getState().platforms.activePlatform;
+    const region = (args || {}).region || getState().platforms.activeRegion;
+    const queryParams: string = objToQuery({ platform, region }) || "";
     fetch(`${config.API.clouds}${queryParams}`)
       .then(res => {
-        console.log(res);
+        dispatch(requestCloudsFinished());
         return res.json();
       })
       .then(json => {
-        console.log(json);
         dispatch(setClouds(json["clouds"]));
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(requestCloudsFinished());
       });
   };
 };

@@ -1,0 +1,19 @@
+.Header {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  padding: 10px;
+  box-shadow: 0px 7px 16px -4px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  background-color: var(--main-color-header);
+}
+
+.logo {
+  height: 30px;
+  width: 30px;
+}
+
+.logo img {
+  height: 100%;
+  width: 100%;
+}

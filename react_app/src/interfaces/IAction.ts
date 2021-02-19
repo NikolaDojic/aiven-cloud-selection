@@ -17,7 +17,12 @@ export interface ISetCloudsAction {
   payload: ICloud[];
 }
 
-export type CloudActions = ISetCloudsAction | IAction;
+export interface ISetActiveCloud {
+  type: string;
+  payload: string;
+}
+
+export type CloudActions = ISetCloudsAction | ISetActiveCloud | IAction;
 
 //platform
 export interface ISetPlatformsAction {
@@ -25,7 +30,21 @@ export interface ISetPlatformsAction {
   payload: IPlatform[];
 }
 
-export type PlatformActions = ISetPlatformsAction | IAction;
+export interface ISetActivePlatform {
+  type: string;
+  payload: string;
+}
+
+export interface ISetActiveRegion {
+  type: string;
+  payload: string;
+}
+
+export type PlatformActions =
+  | ISetPlatformsAction
+  | ISetActivePlatform
+  | ISetActiveRegion
+  | IAction;
 
 //location
 export interface ISetLocationAction {

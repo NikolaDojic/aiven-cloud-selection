@@ -1,0 +1,28 @@
+.Main {
+  padding: 15px;
+}
+.PlatformList {
+  display: flex;
+  width: 100%;
+}
+.Platform {
+  width: 134px;
+  height: 134px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgb(227, 227, 227);
+  margin-right: 10px;
+  transition: border-color 0.2s ease-in-out;
+}
+.Platform img {
+  width: 85px;
+}
+.Platform.selected {
+  border-color: rgb(255, 53, 84);
+}
+.Platform:not(.selected):hover {
+  cursor: pointer;
+  border-color: rgb(255, 53, 84, 0.5);
+}

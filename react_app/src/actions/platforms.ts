@@ -1,9 +1,17 @@
 import {
-  SET_PLATFORMS,
   REQUEST_PLATFORMS,
-  REQUEST_PLATFORMS_FINISHED
+  REQUEST_PLATFORMS_FINISHED,
+  SET_ACTIVE_PLATFORM,
+  SET_ACTIVE_REGION,
+  SET_PLATFORMS
 } from "./types";
-import { IAction, IPlatform } from "../interfaces";
+import {
+  IAction,
+  IPlatform,
+  ISetActivePlatform,
+  ISetActiveRegion
+} from "../interfaces";
+import { fetchClouds } from "./clouds";
 import config from "../config";
 
 export const requestPlatforms: () => IAction = () => ({
@@ -15,25 +23,45 @@ export const requestPlatformsFinished: () => IAction = () => ({
 });
 
 export const setPlatforms: (platforms: IPlatform[]) => IAction = platforms => ({
-  type: REQUEST_PLATFORMS_FINISHED,
+  type: SET_PLATFORMS,
   payload: platforms
 });
 
-interface fetchPlatformsArgs {
-  platform?: string | null;
-  geoRegion?: string | null;
-}
+export const setActivePlatform = (platformId: string) => {
+  return (dispatch: any) => {
+    dispatch({
+      type: SET_ACTIVE_PLATFORM,
+      payload: platformId
+    });
+    dispatch(fetchClouds());
+  };
+};
 
-export const fetchPlatforms: () => (dispatch: any) => void = () => {
-  return dispatch => {
+export const setActiveRegion: (
+  region: string
+) => ISetActiveRegion = region => ({
+  type: SET_ACTIVE_REGION,
+  payload: region
+});
+
+export const fetchPlatforms = () => {
+  return (dispatch: any, getState: any) => {
     fetch(config.API.platforms)
       .then(res => {
-        console.log(res);
+        dispatch(requestPlatformsFinished());
         return res.json();
       })
       .then(json => {
-        console.log(json);
-        dispatch(setPlatforms(json["platforms"]));
+        const platforms = json["platforms"];
+        const activePlatform = getState().platforms.activePlatform;
+        dispatch(setPlatforms(platforms));
+        if (platforms.length && !activePlatform) {
+          dispatch(setActivePlatform(platforms[0].platform_id));
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(requestPlatformsFinished());
       });
   };
 };
