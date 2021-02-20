@@ -1,5 +1,6 @@
 import { ICloud } from "./ICloud";
 import { IPlatform } from "./IPlatform";
+import { IRegion } from "./IRegion";
 import { ILocation } from "./ILocation";
 
 export interface IAction {
@@ -35,16 +36,23 @@ export interface ISetActivePlatform {
   payload: string;
 }
 
+export type PlatformActions =
+  | ISetPlatformsAction
+  | ISetActivePlatform
+  | IAction;
+
+//region
+export interface ISetRegionsAction {
+  type: string;
+  payload: IRegion[];
+}
+
 export interface ISetActiveRegion {
   type: string;
   payload: string;
 }
 
-export type PlatformActions =
-  | ISetPlatformsAction
-  | ISetActivePlatform
-  | ISetActiveRegion
-  | IAction;
+export type RegionActions = ISetRegionsAction | ISetActiveRegion | IAction;
 
 //location
 export interface ISetLocationAction {

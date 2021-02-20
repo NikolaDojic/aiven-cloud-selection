@@ -8,8 +8,10 @@ import {
 import {
   IAction,
   IPlatform,
+  IRegion,
   ISetActivePlatform,
-  ISetActiveRegion
+  ISetPlatformsAction,
+  IState
 } from "../interfaces";
 import { fetchClouds } from "./clouds";
 import config from "../config";
@@ -22,7 +24,9 @@ export const requestPlatformsFinished: () => IAction = () => ({
   type: REQUEST_PLATFORMS_FINISHED
 });
 
-export const setPlatforms: (platforms: IPlatform[]) => IAction = platforms => ({
+export const setPlatforms: (
+  platforms: IPlatform[]
+) => ISetPlatformsAction = platforms => ({
   type: SET_PLATFORMS,
   payload: platforms
 });
@@ -37,15 +41,8 @@ export const setActivePlatform = (platformId: string) => {
   };
 };
 
-export const setActiveRegion: (
-  region: string
-) => ISetActiveRegion = region => ({
-  type: SET_ACTIVE_REGION,
-  payload: region
-});
-
 export const fetchPlatforms = () => {
-  return (dispatch: any, getState: any) => {
+  return (dispatch: any, getState: any): IAction | any => {
     fetch(config.API.platforms)
       .then(res => {
         dispatch(requestPlatformsFinished());
@@ -56,7 +53,13 @@ export const fetchPlatforms = () => {
         const activePlatform = getState().platforms.activePlatform;
         dispatch(setPlatforms(platforms));
         if (platforms.length && !activePlatform) {
-          dispatch(setActivePlatform(platforms[0].platform_id));
+          const currentRegion = getState().regions.regions.find(
+            (region: IRegion) =>
+              region.region === getState().regions.activeRegion
+          );
+          if (currentRegion) {
+            dispatch(setActivePlatform(currentRegion.platforms[0]));
+          }
         }
       })
       .catch(err => {

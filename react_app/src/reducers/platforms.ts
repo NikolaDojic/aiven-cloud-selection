@@ -1,26 +1,26 @@
-import { PlatformActions } from "../interfaces";
+import { PlatformActions, IPlatformState } from "../interfaces";
 import {
   SET_PLATFORMS,
   REQUEST_PLATFORMS,
   REQUEST_PLATFORMS_FINISHED,
-  SET_ACTIVE_PLATFORM,
-  SET_ACTIVE_REGION
+  SET_ACTIVE_PLATFORM
 } from "../actions/types";
 
-const initialState = {
+const initialState: IPlatformState = {
   platforms: [],
   isFetching: false,
-  activePlatform: "",
-  activeRegion: ""
+  activePlatform: ""
 };
 
-const platforms = (state = initialState, action: PlatformActions) => {
+const platforms: (
+  state: IPlatformState,
+  action: PlatformActions
+) => IPlatformState = (state = initialState, action) => {
   const actions: any = {
     [SET_PLATFORMS]: () => ({ ...state, platforms: action.payload }),
     [REQUEST_PLATFORMS]: () => ({ ...state, isFetching: true }),
     [REQUEST_PLATFORMS_FINISHED]: () => ({ ...state, isFetching: false }),
-    [SET_ACTIVE_PLATFORM]: () => ({ ...state, activePlatform: action.payload }),
-    [SET_ACTIVE_REGION]: () => ({ ...state, activeRegion: action.payload })
+    [SET_ACTIVE_PLATFORM]: () => ({ ...state, activePlatform: action.payload })
   };
   return actions.hasOwnProperty(action.type) ? actions[action.type]() : state;
 };

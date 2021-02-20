@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import Platform from "./Platform";
-import { IPlatform } from "../../interfaces";
+import { IRegion, IPlatform } from "../../interfaces";
 import { setActivePlatform } from "../../actions/platforms";
 
 interface Props {
@@ -25,11 +25,18 @@ const PlatformList: React.FC<Props> = ({ platforms, isSelected, onClick }) => {
   );
 };
 
-const mapStateToProps = (state: any) => ({
-  platforms: state.platforms.platforms,
-  isSelected: (platform: IPlatform) =>
-    platform.platform_id === state.platforms.activePlatform
-});
+const mapStateToProps = (state: any) => {
+  const currentRegion: IRegion = state.regions.regions.find(
+    (region: IRegion) => region.region === state.regions.activeRegion
+  ) || { platforms: [] };
+  return {
+    platforms: state.platforms.platforms.filter((platform: IPlatform) =>
+      currentRegion.platforms.includes(platform.platform_id)
+    ),
+    isSelected: (platform: IPlatform) =>
+      platform.platform_id === state.platforms.activePlatform
+  };
+};
 
 const mapDispatchToProps = (dispatch: any) => ({
   onClick: (platform: IPlatform) =>

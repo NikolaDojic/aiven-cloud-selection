@@ -5,12 +5,13 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { fetchClouds } from "./actions/clouds";
 import { fetchPlatforms } from "./actions/platforms";
+import { fetchRegions } from "./actions/regions";
 import { askForGeolocation } from "./actions/location";
 import store from "./store";
 import { Provider } from "react-redux";
 
-store.dispatch(fetchClouds());
 store.dispatch(fetchPlatforms());
+store.dispatch(fetchRegions());
 store.dispatch(askForGeolocation());
 
 ReactDOM.render(

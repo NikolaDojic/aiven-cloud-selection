@@ -1,9 +1,10 @@
 import React from "react";
+import { IRegion } from "../../interfaces";
 
 interface Props {
-  region: string;
-  onClick: (region: string) => void;
-  isSelected: (region: string) => boolean;
+  region: IRegion;
+  onClick: (region: IRegion) => void;
+  isSelected: (region: IRegion) => boolean;
 }
 
 const Region: React.FC<Props> = ({ region, onClick, isSelected }) => {
@@ -12,7 +13,7 @@ const Region: React.FC<Props> = ({ region, onClick, isSelected }) => {
       onClick={() => onClick(region)}
       className={`Region${isSelected(region) ? " selected" : ""}`}
     >
-      {region.titleCase()}
+      {region.region.titleCase()}
     </div>
   );
 };

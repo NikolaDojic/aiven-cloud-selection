@@ -6,9 +6,9 @@ const initialState: ILocation = {
   longitude: 0
 };
 
-const locations = (
-  state: ILocation = initialState,
-  action: LocationActions
+const locations: (state: ILocation, action: LocationActions) => ILocation = (
+  state = initialState,
+  action
 ) => {
   const actions: any = {
     [SET_USER_LOCATION]: () => ({ ...state, ...action.payload })

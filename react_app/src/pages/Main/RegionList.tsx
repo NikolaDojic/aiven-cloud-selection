@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import Region from "./Region";
-import { IPlatform } from "../../interfaces";
-import { setActiveRegion } from "../../actions/platforms";
+import { IRegion } from "../../interfaces";
+import { setActiveRegion } from "../../actions/regions";
 
 interface Props {
-  onClick: (region: string) => void;
-  isSelected: (region: string) => boolean;
-  regions: string[];
+  onClick: (region: IRegion) => void;
+  isSelected: (region: IRegion) => boolean;
+  regions: IRegion[];
 }
 
 const RegionList: React.FC<Props> = ({ onClick, isSelected, regions }) => {
@@ -15,7 +15,7 @@ const RegionList: React.FC<Props> = ({ onClick, isSelected, regions }) => {
     <div className="RegionList">
       {regions.map(region => (
         <Region
-          key={region}
+          key={region.region}
           onClick={onClick}
           isSelected={isSelected}
           region={region}
@@ -26,20 +26,17 @@ const RegionList: React.FC<Props> = ({ onClick, isSelected, regions }) => {
 };
 
 const mapStateToProps = (state: any) => {
-  const currentPlatform =
-    state.platforms.platforms.find(
-      (platform: IPlatform) =>
-        platform.platform_id === state.platforms.activePlatform
-    ) || {};
+  const regions: IRegion[] = state.regions.regions;
   return {
-    regions: currentPlatform.regions || [],
-    isSelected: (region: string) => region === state.platforms.activeRegion
+    regions,
+    isSelected: (region: IRegion) =>
+      region.region === state.regions.activeRegion
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => ({
-  onClick: (region: string) => {
-    dispatch(setActiveRegion(region));
+  onClick: (region: IRegion) => {
+    dispatch(setActiveRegion(region.region));
   }
 });
 

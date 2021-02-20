@@ -11,7 +11,9 @@ const config = {
   baseUrl,
   API: {
     clouds: `${baseUrl}clouds`,
-    platforms: `${baseUrl}platforms`
+    cosestCloud: `${baseUrl}clouds/closest`,
+    platforms: `${baseUrl}platforms`,
+    regions: `${baseUrl}regions`
   }
 };
 

@@ -1,4 +1,5 @@
 import { IPlatform } from "./IPlatform";
+
 export interface IPlatformState {
   platforms: IPlatform[];
   isFetching: boolean;

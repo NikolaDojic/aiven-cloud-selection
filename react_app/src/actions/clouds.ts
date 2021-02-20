@@ -1,6 +1,19 @@
-import { SET_CLOUDS, REQUEST_CLOUDS, REQUEST_CLOUDS_FINISHED } from "./types";
-import { INoPayloadAction, ICloud, ISetCloudsAction } from "../interfaces";
+import {
+  REQUEST_CLOUDS,
+  REQUEST_CLOUDS_FINISHED,
+  SET_ACTIVE_CLOUD,
+  SET_CLOUDS
+} from "./types";
+import {
+  INoPayloadAction,
+  ICloud,
+  ISetCloudsAction,
+  ISetActiveCloud,
+  IState
+} from "../interfaces";
 import { objToQuery } from "../utils";
+import { setActiveRegion } from "./regions";
+import { setActivePlatform } from "./platforms";
 import config from "../config";
 
 export const requestClouds: () => INoPayloadAction = () => ({
@@ -16,6 +29,13 @@ export const setClouds: (clouds: ICloud[]) => ISetCloudsAction = clouds => ({
   payload: clouds
 });
 
+export const setActiveCloud: (cloud_name: string) => ISetActiveCloud = (
+  cloud_name: string
+) => ({
+  type: SET_ACTIVE_CLOUD,
+  payload: cloud_name
+});
+
 interface fetchCloudsArgs {
   platform?: string | null | undefined;
   region?: string | null | undefined;
@@ -24,11 +44,11 @@ interface fetchCloudsArgs {
 export const fetchClouds = (
   args: fetchCloudsArgs = { platform: "", region: "" }
 ) => {
-  return (dispatch: any, getState: any) => {
+  return (dispatch: any, getState: () => IState) => {
     const platform =
       (args || {}).platform || getState().platforms.activePlatform;
-    const region = (args || {}).region || getState().platforms.activeRegion;
-    const queryParams: string = objToQuery({ platform, region }) || "";
+    const region = (args || {}).region || getState().regions.activeRegion;
+    const queryParams = objToQuery({ platform, region }) || "";
     fetch(`${config.API.clouds}${queryParams}`)
       .then(res => {
         dispatch(requestCloudsFinished());
@@ -40,6 +60,20 @@ export const fetchClouds = (
       .catch(err => {
         console.log(err);
         dispatch(requestCloudsFinished());
+      });
+  };
+};
+
+export const findClosestCloud = () => {
+  return (dispatch: any, getState: () => IState) => {
+    const location = getState().location;
+    const queryParams = objToQuery(location) || "";
+    fetch(`${config.API.cosestCloud}${queryParams}`)
+      .then(res => res.json())
+      .then(json => {
+        dispatch(setActiveCloud(json.cloud_name));
+        dispatch(setActiveRegion(json.location.region));
+        dispatch(setActivePlatform(json.cloud_name.split("-")[0]));
       });
   };
 };
