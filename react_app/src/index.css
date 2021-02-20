@@ -1,11 +1,11 @@
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: Ubuntu, source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 body {
   --main-color-header: #fff;
   --main-color-bkg: #f1f3f4;
-  --main-color-font: rgba(255, 255, 255, 0.5);
+  --main-color-font: #333;
   --main-color-border: rgba(143, 144, 151, 0.4);
   --main-color-footer: #333333;
   --main-size-font: 14px;

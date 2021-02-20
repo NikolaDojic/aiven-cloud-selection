@@ -1,6 +1,7 @@
 .Main {
   padding: 15px;
 }
+.RegionList,
 .PlatformList {
   display: flex;
   width: 100%;
@@ -14,7 +15,7 @@
   justify-content: center;
   border: 2px solid rgb(227, 227, 227);
   margin-right: 10px;
-  transition: border-color 0.2s ease-in-out;
+  transition: border 0.2s ease-in-out;
 }
 .Platform img {
   width: 85px;
@@ -25,4 +26,15 @@
 .Platform:not(.selected):hover {
   cursor: pointer;
   border-color: rgb(255, 53, 84, 0.5);
+}
+.RegionList {
+  margin-top: 20px;
+}
+.Region {
+  padding: 10px;
+  transition: border 0.2s ease-in-out;
+}
+.Region.selected {
+  border-bottom: 3px solid;
+  border-color: rgb(255, 53, 84);
 }

@@ -2,59 +2,25 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { shallow } from "enzyme";
 import App from "./index";
-import { testStore } from "../../test_utils";
+import { testStore, findByTestAttr } from "../../test_utils";
+import { Provider } from "react-redux";
 
 const setUp = (initialState = {}) => {
   const store = testStore(initialState);
-  const wrapper = shallow(
-    <Provider store={store}>
-      <App store={store} />
-    </Provider>
-  )
+  const wrapper = shallow(<App store={store} />)
     .childAt(0)
     .dive();
-  console.log(wrapper);
   return wrapper;
 };
 
 describe("App component", () => {
-  let wrapper;
+  let wrapper = setUp();
   beforeEach(() => {
-    const initialState = {
-      posts: [
-        {
-          title: "Example title 1",
-          body: "Some text"
-        },
-        {
-          title: "Example title 2",
-          body: "Some text"
-        },
-        {
-          title: "Example title 3",
-          body: "Some text"
-        }
-      ]
-    };
-    wrapper = setUp(initialState);
+    wrapper = setUp();
   });
 
-  test("renders header", () => {
-    let wrapper = setUp();
-    render(wrapper);
-    const headerElement = screen.getByTestId("header");
-    expect(headerElement).toBeInTheDocument();
-  });
-
-  test("renders footer", () => {
-    render(<App />);
-    const footerElement = screen.getByTestId("footer");
-    expect(footerElement).toBeInTheDocument();
-  });
-
-  test("renders footer", () => {
-    render(<App />);
-    const mainElement = screen.getByTestId("appMain");
-    expect(mainElement).toBeInTheDocument();
+  it("renders without error", () => {
+    const appComponent = findByTestAttr(wrapper, "appComponent");
+    expect(appComponent.length).toBe(1);
   });
 });
