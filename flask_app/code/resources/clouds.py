@@ -23,3 +23,18 @@ class Clouds(Resource):
       traceback.print_exc()
       print(e.__class__, e)
       return { 'message': 'failed to fetch data'}, 500
+
+
+class ClosestCloud(Resource):
+  def get(self):
+    try:
+      parser = reqparse.RequestParser()
+      parser.add_argument('latitude', type=float, required=True)
+      parser.add_argument('longitude', type=float, required=True)
+      args = parser.parse_args()
+      cloud = cloud_service.get_closest_cloud(args)
+      return cloud, 200
+    except Exception as e:
+      traceback.print_exc()
+      print(e.__class__, e)
+      return { 'message': 'failed to fetch data'}, 500

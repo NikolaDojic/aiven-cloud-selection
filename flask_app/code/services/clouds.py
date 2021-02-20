@@ -1,20 +1,13 @@
-import re
 import traceback
+from math import sin, cos, sqrt, atan2, radians
 from services.http_client import request
-
-imgs = {
-    "azure": "https://console.aiven.io/44dc479a1802bcb6996ab03a40b15923.png",
-    "aws": "https://console.aiven.io/178c42cbb2c415976529db5c05b18304.png",
-    "google": "https://console.aiven.io/9789c734722bef53b119852d91132a79.png",
-    "do": "https://console.aiven.io/0b0c79059b641ca7867be39863a97de1.png",
-    "upcloud": "https://console.aiven.io/f00b8cd058bf543584144ec9205eb51a.png",
-}
+from services.platforms import platform_service
+from services.regions import region_service
 
 
 class CloudService:
   def __init__(self):
-    clouds = []
-    available_platforms = []
+    self.clouds = []
     self.get_clouds()
 
   def get_clouds(self):
@@ -24,43 +17,11 @@ class CloudService:
           self.__normalize_cloud(cloud)
           for cloud in request("GET", "clouds").get("clouds", [])
       ]
-      self.platforms_from_clouds()
+      platform_service.platforms_from_clouds(self.clouds)
+      region_service.regions_from_clouds(self.clouds)
     except Exception as e:
       traceback.print_exc()
       print(e.__class__, e)
-
-  def platforms_from_clouds(self, clouds=None):
-    self.available_platforms = []
-    clouds = clouds or self.clouds
-    for cloud in clouds:
-      platform_id = cloud.get("cloud_name", "").split("-")[0]
-      if all([
-          platform["platform_id"] != platform_id
-          for platform in self.available_platforms
-      ]):
-        try:
-          name = re.findall(r'(?<=\-\s)(.*?)(?=\:)',
-                            cloud["cloud_description"])[0] or platform_id
-        except Exception as e:
-          traceback.print_exc()
-          print(e.__class__, e)
-          name = platform_id
-
-        new_platform = {
-            "platform_id": platform_id,
-            "name": name,
-            "img": imgs.get(platform_id, ""),
-            "regions": [cloud["location"]["region"]]
-        }
-        self.available_platforms.append(new_platform)
-      else:
-        platform = [
-            platform for platform in self.available_platforms
-            if platform["platform_id"] == platform_id
-        ][0]
-        current_region = cloud["location"]["region"]
-        if current_region not in platform["regions"]:
-          platform["regions"].append(current_region)
 
   def filter_by_platform(self, platform_id, clouds=None):
     clouds = clouds or self.clouds
@@ -94,6 +55,39 @@ class CloudService:
       del cloud[key]
     cloud["location"] = location
     return cloud
+
+  def get_closest_cloud(self, user_coordinates, clouds=None):
+    clouds = clouds or self.clouds
+    shortest_distance = 120000  #apsurdly large number
+    closest_cloud = None
+    for cloud in (self.clouds):
+      current_distance = distance_calculator(cloud["location"],
+                                             user_coordinates)
+      if shortest_distance > current_distance:
+        shortest_distance = current_distance
+        closest_cloud = cloud
+
+    return closest_cloud
+
+
+#credit Michael0x2a https://stackoverflow.com/a/19412565/7562654
+def distance_calculator(coord1, coord2):
+  # approximate radius of earth in km
+  R = 6373.0
+
+  lat1 = radians(coord1["latitude"])
+  lon1 = radians(coord1["longitude"])
+  lat2 = radians(coord2["latitude"])
+  lon2 = radians(coord2["longitude"])
+
+  dlon = lon2 - lon1
+  dlat = lat2 - lat1
+
+  a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+  c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+  distance = R * c
+  return distance
 
 
 cloud_service = CloudService()

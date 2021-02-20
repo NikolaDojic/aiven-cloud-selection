@@ -1,13 +1,13 @@
 import traceback
 from flask_restful import Resource
-from services.platforms import platform_service
+from services.regions import region_service
 
 
-class Platforms(Resource):
+class Regions(Resource):
   def get(self):
     try:
       return {
-          "platforms": platform_service.platforms,
+          "regions": region_service.regions,
       }, 200
     except Exception as e:
       traceback.print_exc()

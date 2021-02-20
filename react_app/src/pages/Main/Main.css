@@ -38,3 +38,8 @@
   border-bottom: 3px solid;
   border-color: rgb(255, 53, 84);
 }
+.Region:not(.selected):hover {
+  cursor: pointer;
+  border-bottom: 3px solid;
+  border-color: rgb(255, 53, 84, 0.5);
+}
