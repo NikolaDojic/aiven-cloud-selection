@@ -1,4 +1,4 @@
-import { LocationActions, ILocation } from "../interfaces";
+import { ILocation } from "../interfaces";
 import { SET_USER_LOCATION } from "../actions/types";
 
 const initialState: ILocation = {
@@ -6,7 +6,7 @@ const initialState: ILocation = {
   longitude: 0
 };
 
-const locations: (state: ILocation, action: LocationActions) => ILocation = (
+const locations: (state: ILocation, action: any) => ILocation = (
   state = initialState,
   action
 ) => {

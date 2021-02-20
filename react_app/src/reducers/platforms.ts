@@ -15,7 +15,7 @@ const initialState: IPlatformState = {
 const platforms: (
   state: IPlatformState,
   action: PlatformActions
-) => IPlatformState = (state = initialState, action) => {
+) => IPlatformState = (state = initialState, action: PlatformActions) => {
   const actions: any = {
     [SET_PLATFORMS]: () => ({ ...state, platforms: action.payload }),
     [REQUEST_PLATFORMS]: () => ({ ...state, isFetching: true }),

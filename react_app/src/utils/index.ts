@@ -22,7 +22,10 @@ export const objToQuery: (obj: any) => string = obj => {
   const keys = Object.keys(obj);
   if (!keys.length) return "";
   return (
-    "?" + keys.map(key => (obj[key] ? `${key}=${obj[key]}` : "")).join("&")
+    "?" +
+    keys
+      .map(key => (obj[key] || obj[key] == 0 ? `${key}=${obj[key]}` : ""))
+      .join("&")
   );
 };
 

@@ -1,5 +1,6 @@
 import { SET_USER_LOCATION } from "./types";
-import { ILocation, ISetLocationAction } from "../interfaces";
+import { ILocation, ISetLocationAction, AllActions } from "../interfaces";
+import { Dispatch } from "redux";
 
 export const setUserLocation: (
   location: ILocation
@@ -8,8 +9,8 @@ export const setUserLocation: (
   payload: location
 });
 
-export const askForGeolocation: () => (dispatch: any) => void = () => {
-  return (dispatch: any) => {
+export const askForGeolocation: () => (dispatch: Dispatch) => void = () => {
+  return dispatch => {
     window.navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords;
       dispatch(

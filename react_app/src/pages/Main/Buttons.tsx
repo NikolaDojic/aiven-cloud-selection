@@ -1,5 +1,5 @@
 import React from "react";
-import FindClosestButton from "./FindClosestButton.tsx";
+import FindClosestButton from "./FindClosestButton";
 
 const Buttons: React.FC = props => {
   return (

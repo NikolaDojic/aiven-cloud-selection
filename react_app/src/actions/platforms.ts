@@ -13,6 +13,7 @@ import {
   ISetPlatformsAction,
   IState
 } from "../interfaces";
+import { Dispatch } from "redux";
 import { fetchClouds } from "./clouds";
 import config from "../config";
 
@@ -41,8 +42,11 @@ export const setActivePlatform = (platformId: string) => {
   };
 };
 
-export const fetchPlatforms = () => {
-  return (dispatch: any, getState: any): IAction | any => {
+export const fetchPlatforms: () => (
+  dispatch: any,
+  getState: any
+) => IAction | any = () => {
+  return (dispatch, getState) => {
     fetch(config.API.platforms)
       .then(res => {
         dispatch(requestPlatformsFinished());

@@ -61,3 +61,10 @@ export interface ISetLocationAction {
 }
 
 export type LocationActions = ISetLocationAction | IAction;
+
+export type AllActions =
+  | LocationActions
+  | PlatformActions
+  | CloudActions
+  | RegionActions
+  | IAction;

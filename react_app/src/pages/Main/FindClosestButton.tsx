@@ -2,7 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { findClosestCloud } from "../../actions/clouds";
 
-const FindClosestButton: React.FC = ({ findClosestCloud }) => {
+interface Props {
+  findClosestCloud: () => void;
+}
+
+const FindClosestButton: React.FC<Props> = ({ findClosestCloud }) => {
   return (
     <button className="FindClosestButton" onClick={() => findClosestCloud()}>
       Find Closest Cloud
