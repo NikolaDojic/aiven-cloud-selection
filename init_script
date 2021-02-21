@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd flask_app
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+cd ../react_app
+npm i 
