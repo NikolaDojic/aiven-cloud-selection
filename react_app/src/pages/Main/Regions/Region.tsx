@@ -1,5 +1,5 @@
 import React from "react";
-import { IRegion } from "../../interfaces";
+import { IRegion } from "../../../interfaces";
 
 interface Props {
   region: IRegion;

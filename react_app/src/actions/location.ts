@@ -11,14 +11,21 @@ export const setUserLocation: (
 
 export const askForGeolocation: () => (dispatch: Dispatch) => void = () => {
   return dispatch => {
-    window.navigator.geolocation.getCurrentPosition(position => {
-      const { latitude, longitude } = position.coords;
-      dispatch(
-        setUserLocation({
-          latitude,
-          longitude
-        })
-      );
+    navigator.permissions.query({ name: "geolocation" }).then(status => {
+      if (status.state === "prompt") {
+        alert(
+          "We will ask for your geolocation. The only purpous is to help you find the closest server."
+        );
+      }
+      window.navigator.geolocation.getCurrentPosition(position => {
+        const { latitude, longitude } = position.coords;
+        dispatch(
+          setUserLocation({
+            latitude,
+            longitude
+          })
+        );
+      });
     });
   };
 };

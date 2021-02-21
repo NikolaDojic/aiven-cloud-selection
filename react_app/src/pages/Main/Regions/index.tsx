@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import Region from "./Region";
-import { IRegion } from "../../interfaces";
-import { setActiveRegion } from "../../actions/regions";
+import { IRegion } from "../../../interfaces";
+import { setActiveRegion } from "../../../actions/regions";
 
 interface Props {
   onClick: (region: IRegion) => void;

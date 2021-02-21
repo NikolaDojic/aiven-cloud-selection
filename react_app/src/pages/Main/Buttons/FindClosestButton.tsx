@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { findClosestCloud } from "../../actions/clouds";
+import { findClosestCloud } from "../../../actions/clouds";
 
 interface Props {
   findClosestCloud: () => void;

@@ -29,33 +29,25 @@ export const objToQuery: (obj: any) => string = obj => {
   );
 };
 
-//credits Tijs Martens https://stackoverflow.com/a/65799152/7562654
+// credits user1921 https://stackoverflow.com/a/27943/7562654
 export const getDistance: (a: ILocation, b: ILocation) => number = (
-  cord1,
-  cord2
+  coord1,
+  coord2
 ) => {
-  if (cord1.latitude == cord2.latitude && cord1.longitude == cord2.longitude) {
-    return 0;
-  }
+  var R = 6371e3 / 1000; // Radius of the earth in km
+  var dLat = deg2rad(coord2.latitude - coord1.latitude); // deg2rad below
+  var dLon = deg2rad(coord2.longitude - coord1.longitude);
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(coord1.latitude)) *
+      Math.cos(deg2rad(coord2.latitude)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c; // Distance in km
+  return d;
+};
 
-  const radlat1 = (Math.PI * cord1.latitude) / 180;
-  const radlat2 = (Math.PI * cord2.latitude) / 180;
-
-  const theta = cord1.longitude - cord2.longitude;
-  const radtheta = (Math.PI * theta) / 180;
-
-  let dist =
-    Math.sin(radlat1) * Math.sin(radlat2) +
-    Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-
-  if (dist > 1) {
-    dist = 1;
-  }
-
-  dist = Math.acos(dist);
-  dist = (dist * 180) / Math.PI;
-  dist = dist * 60 * 1.1515;
-  dist = dist * 1.609344; //convert miles to km
-
-  return dist;
+const deg2rad = (deg: number) => {
+  return deg * (Math.PI / 180);
 };

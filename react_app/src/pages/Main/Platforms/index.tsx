@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import Platform from "./Platform";
-import { IRegion, IPlatform } from "../../interfaces";
-import { setActivePlatform } from "../../actions/platforms";
+import { IRegion, IPlatform } from "../../../interfaces";
+import { setActivePlatform } from "../../../actions/platforms";
 
 interface Props {
   platforms: IPlatform[];

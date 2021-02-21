@@ -1,16 +1,16 @@
 import React from "react";
 import "./Main.css";
-import PlatformList from "./PlatformList";
-import RegionList from "./RegionList";
-import CloudList from "./CloudList";
+import Platforms from "./Platforms";
+import Regions from "./Regions";
+import Clouds from "./Clouds";
 import Buttons from "./Buttons";
 
 const Main: React.FC = props => {
   return (
     <div className="Main">
-      <RegionList />
-      <PlatformList />
-      <CloudList />
+      <Regions />
+      <Platforms />
+      <Clouds />
       <Buttons />
     </div>
   );

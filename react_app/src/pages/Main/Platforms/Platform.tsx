@@ -1,5 +1,5 @@
 import React from "react";
-import { IPlatform } from "../../interfaces";
+import { IPlatform } from "../../../interfaces";
 
 interface Props {
   platform: IPlatform;

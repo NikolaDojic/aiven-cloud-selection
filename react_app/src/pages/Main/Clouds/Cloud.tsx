@@ -1,5 +1,5 @@
 import React from "react";
-import { ICloud, ILocation } from "../../interfaces";
+import { ICloud, ILocation } from "../../../interfaces";
 
 interface Props {
   cloud: ICloud;

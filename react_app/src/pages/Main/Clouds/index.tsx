@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import Cloud from "./Cloud";
-import { IRegion, ICloud, ILocation } from "../../interfaces";
-import { setActiveCloud } from "../../actions/clouds";
-import { getDistance } from "../../utils";
+import { IRegion, ICloud, ILocation } from "../../../interfaces";
+import { setActiveCloud } from "../../../actions/clouds";
+import { getDistance } from "../../../utils";
 
 interface Props {
   clouds: ICloud[];
