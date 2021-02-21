@@ -48,8 +48,15 @@ export const fetchClouds = (
     const platform =
       (args || {}).platform || getState().platforms.activePlatform;
     const region = (args || {}).region || getState().regions.activeRegion;
-    const queryParams = objToQuery({ platform, region }) || "";
-    fetch(`${config.API.clouds}${queryParams}`)
+    const fetchArgs: any = { platform, region };
+    Object.keys(fetchArgs).map((key: string) => {
+      if (!fetchArgs[key]) {
+        delete fetchArgs[key];
+      }
+    });
+
+    const queryParams = objToQuery(fetchArgs) || "";
+    return fetch(`${config.API.clouds}${queryParams}`)
       .then(res => {
         dispatch(requestCloudsFinished());
         return res.json();
@@ -68,7 +75,7 @@ export const findClosestCloud = () => {
   return (dispatch: any, getState: () => IState) => {
     const location = getState().location;
     const queryParams = objToQuery(location) || "";
-    fetch(`${config.API.cosestCloud}${queryParams}`)
+    return fetch(`${config.API.cosestCloud}${queryParams}`)
       .then(res => res.json())
       .then(json => {
         dispatch(setActiveCloud(json.cloud_name));

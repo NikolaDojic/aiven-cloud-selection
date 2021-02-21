@@ -1,6 +1,5 @@
 import { SET_USER_LOCATION } from "./types";
 import { ILocation, ISetLocationAction, AllActions } from "../interfaces";
-import { Dispatch } from "redux";
 
 export const setUserLocation: (
   location: ILocation
@@ -9,7 +8,7 @@ export const setUserLocation: (
   payload: location
 });
 
-export const askForGeolocation: () => (dispatch: Dispatch) => void = () => {
+export const askForGeolocation: () => (dispatch: any) => void = () => {
   return dispatch => {
     navigator.permissions.query({ name: "geolocation" }).then(status => {
       if (status.state === "prompt") {

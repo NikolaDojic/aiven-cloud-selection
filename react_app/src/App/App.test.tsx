@@ -1,6 +1,7 @@
 import App from "./index";
 import { shallow } from "enzyme";
 import React from "react";
+import { findByTestAttr } from "../../test_utils";
 
 const setUp = (initialState = {}) => {
   const wrapper = shallow(<App />);
@@ -11,7 +12,7 @@ describe("App Component", () => {
   let wrapper = setUp();
 
   it("Should render without errors", () => {
-    const component = wrapper.find("[data-test='appComponent']");
+    const component = findByTestAttr(wrapper, "appComponent");
     expect(component.length).toBe(1);
   });
 

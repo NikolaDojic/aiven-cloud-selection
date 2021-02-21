@@ -8,7 +8,11 @@ interface Props {
 
 const FindClosestButton: React.FC<Props> = ({ findClosestCloud }) => {
   return (
-    <button className="FindClosestButton" onClick={() => findClosestCloud()}>
+    <button
+      data-testid="findClosestButton"
+      className="FindClosestButton"
+      onClick={() => findClosestCloud()}
+    >
       Find Closest Cloud
     </button>
   );

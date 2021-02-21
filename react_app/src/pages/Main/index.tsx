@@ -8,8 +8,8 @@ import Buttons from "./Buttons";
 const Main: React.FC = props => {
   return (
     <div className="Main">
-      <Regions />
       <Platforms />
+      <Regions />
       <Clouds />
       <Buttons />
     </div>

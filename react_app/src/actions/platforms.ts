@@ -15,6 +15,7 @@ import {
 } from "../interfaces";
 import { Dispatch } from "redux";
 import { fetchClouds } from "./clouds";
+import { setActiveRegion } from "./regions";
 import config from "../config";
 
 export const requestPlatforms: () => IAction = () => ({
@@ -33,12 +34,22 @@ export const setPlatforms: (
 });
 
 export const setActivePlatform = (platformId: string) => {
-  return (dispatch: any) => {
+  return (dispatch: any, getState: any) => {
     dispatch({
       type: SET_ACTIVE_PLATFORM,
       payload: platformId
     });
-    dispatch(fetchClouds());
+    const currentPlatform: IPlatform = getState().platforms.platforms.find(
+      (platform: IPlatform) => platform.platform_id === platformId
+    );
+    if (
+      currentPlatform &&
+      !currentPlatform.regions.includes(getState().regions.activeRegion)
+    ) {
+      dispatch(setActiveRegion(currentPlatform.regions[0]));
+    } else {
+      dispatch(fetchClouds());
+    }
   };
 };
 
@@ -47,7 +58,7 @@ export const fetchPlatforms: () => (
   getState: any
 ) => IAction | any = () => {
   return (dispatch, getState) => {
-    fetch(config.API.platforms)
+    return fetch(config.API.platforms)
       .then(res => {
         dispatch(requestPlatformsFinished());
         return res.json();
@@ -57,13 +68,7 @@ export const fetchPlatforms: () => (
         const activePlatform = getState().platforms.activePlatform;
         dispatch(setPlatforms(platforms));
         if (platforms.length && !activePlatform) {
-          const currentRegion = getState().regions.regions.find(
-            (region: IRegion) =>
-              region.region === getState().regions.activeRegion
-          );
-          if (currentRegion) {
-            dispatch(setActivePlatform(currentRegion.platforms[0]));
-          }
+          dispatch(setActivePlatform(platforms[0].platform_id));
         }
       })
       .catch(err => {

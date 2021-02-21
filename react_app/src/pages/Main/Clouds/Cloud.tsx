@@ -10,6 +10,7 @@ interface Props {
 const Cloud: React.FC<Props> = ({ cloud, onClick, isSelected }) => {
   return (
     <div
+      data-test="cloud"
       onClick={() => onClick(cloud)}
       className={`Cloud${isSelected(cloud) ? " selected" : ""}`}
     >

@@ -7,6 +7,7 @@ import {
 import {
   IAction,
   IRegion,
+  IPlatform,
   ISetActiveRegion,
   ISetRegionsAction
 } from "../interfaces";
@@ -35,23 +36,13 @@ export const setActiveRegion = (regionId: string) => {
       type: SET_ACTIVE_REGION,
       payload: regionId
     });
-    const currentRegion: IRegion = getState().regions.regions.find(
-      (region: IRegion) => region.region === regionId
-    );
-    if (
-      currentRegion &&
-      !currentRegion.platforms.includes(getState().platforms.activePlatform)
-    ) {
-      dispatch(setActivePlatform(currentRegion.platforms[0]));
-    } else {
-      dispatch(fetchClouds());
-    }
+    dispatch(fetchClouds());
   };
 };
 
 export const fetchRegions = () => {
   return (dispatch: any, getState: any) => {
-    fetch(config.API.regions)
+    return fetch(config.API.regions)
       .then(res => {
         dispatch(requestRegionsFinished());
         return res.json();
@@ -61,7 +52,13 @@ export const fetchRegions = () => {
         const activeRegion = getState().regions.activeRegion;
         dispatch(setRegions(regions));
         if (regions.length && !activeRegion) {
-          dispatch(setActiveRegion(regions[0].region));
+          const currentPlatform = getState().platforms.platforms.find(
+            (platform: IPlatform) =>
+              platform.platform_id === getState().platforms.activePlatform
+          );
+          if (currentPlatform) {
+            dispatch(setActiveRegion(currentPlatform.regions[0]));
+          }
         }
       })
       .catch(err => {

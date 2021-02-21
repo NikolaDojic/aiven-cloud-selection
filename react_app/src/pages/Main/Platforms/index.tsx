@@ -26,13 +26,8 @@ const PlatformList: React.FC<Props> = ({ platforms, isSelected, onClick }) => {
 };
 
 const mapStateToProps = (state: any) => {
-  const currentRegion: IRegion = state.regions.regions.find(
-    (region: IRegion) => region.region === state.regions.activeRegion
-  ) || { platforms: [] };
   return {
-    platforms: state.platforms.platforms.filter((platform: IPlatform) =>
-      currentRegion.platforms.includes(platform.platform_id)
-    ),
+    platforms: state.platforms.platforms,
     isSelected: (platform: IPlatform) =>
       platform.platform_id === state.platforms.activePlatform
   };

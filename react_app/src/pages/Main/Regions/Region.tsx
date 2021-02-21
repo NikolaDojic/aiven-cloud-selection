@@ -10,6 +10,7 @@ interface Props {
 const Region: React.FC<Props> = ({ region, onClick, isSelected }) => {
   return (
     <div
+      data-test="region"
       onClick={() => onClick(region)}
       className={`Region${isSelected(region) ? " selected" : ""}`}
     >

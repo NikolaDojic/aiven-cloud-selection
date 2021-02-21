@@ -11,7 +11,7 @@ export const findByTestId = (component, attr) => {
   return wrapper;
 };
 
-export const testStore = initialState => {
+export const testStore = (initialState = {}) => {
   const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
   return createStoreWithMiddleware(reducer(), initialState);
 };
