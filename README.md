@@ -26,7 +26,7 @@ This script will create the virtual environment in the flask_app directory and i
 
 If the script fails, we will need to manually install the dependencies listed in `requirements.txt` and `package.json` for the flask and the react app respectively.
 
-In the `flask_app/code/.env` file, one should add an authentication token, generated on the [profile settings](https://console.aiven.io/profile/auth) page. Token should be in the `FLASK_APP_AIVEN_API_KEY` variable (`FLASK_APP_AIVEN_API_KEY="`_YOUR_TOKEN_`"`).
+In the `flask_app/code/.env` file, one should add an authentication token, generated on the [profile settings](https://console.aiven.io/profile/auth) page. Token should be in the `FLASK_APP_AIVEN_API_KEY` variable (```FLASK_APP_AIVEN_API_KEY="$YOUR_TOKEN"``` where `$YOUR_TOKEN` is from profile settings page).
 
 ## Running the applications
 
