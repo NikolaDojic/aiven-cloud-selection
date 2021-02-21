@@ -1,4 +1,4 @@
-# aiven cloud selection task 
+# Aiven cloud selection task 
 
 ## _META_
 This is not separated into two repositories only because the task description implies that there should be one repo,
