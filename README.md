@@ -4,7 +4,7 @@
 
 This is not separated into two repositories only because the task description implies that there should be one repo,
 otherwise, I would argue that we are better off with separate repositories for server and client apps.
-For the convinience, API key is located in .env file. Idealy this file would not be part of the repository.
+For the convenience, API key is located in .env file. Idealy this file would not be part of the repository.
 
 ## Requirements
 
