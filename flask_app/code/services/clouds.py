@@ -58,7 +58,7 @@ class CloudService:
 
   def get_closest_cloud(self, user_coordinates, clouds=None):
     clouds = clouds or self.clouds
-    shortest_distance = 120000  #apsurdly large number
+    shortest_distance = 120000  #absurdly large number
     closest_cloud = None
     for cloud in (self.clouds):
       current_distance = distance_calculator(cloud["location"],
@@ -73,7 +73,7 @@ class CloudService:
 #credit Michael0x2a https://stackoverflow.com/a/19412565/7562654
 def distance_calculator(coord1, coord2):
   # approximate radius of earth in km
-  R = 6373.0
+  R = 6371.0
 
   lat1 = radians(coord1["latitude"])
   lon1 = radians(coord1["longitude"])
